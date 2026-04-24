@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=yes">
+    <title>Device Network Monitor</title>
+    <link rel="icon" type="image/svg+xml" href="./icons/logo.svg">
+    <style>
+        body {
+            background: #0a1833;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Consolas, monospace;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #162447;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px #0008;
+            padding: 32px 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #21e6c1;
+            margin-bottom: 32px;
+        }
+        .section {
+            margin-bottom: 32px;
+        }
+        .section-title {
+            color: #21e6c1;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #21e6c1;
+            padding-bottom: 4px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-table td {
+            padding: 6px 10px;
+        }
+        .info-table tr:nth-child(even) {
+            background: #1f4068;
+        }
+        .info-table tr:nth-child(odd) {
+            background: #162447;
+        }
+        .label {
+            color: #21e6c1;
+            width: 160px;
+        }
+        .value {
+            color: #e0e0e0;
+        }
+        .footer {
+            text-align: center;
+            color: #888;
+            margin-top: 24px;
+            font-size: 0.9em;
+        }
+        @media (max-width: 800px) {
+            .container {
+                padding: 8px 2vw;
+                max-width: 98vw;
+            }
+            .info-table td {
+                padding: 4px 2px;
+                font-size: 0.95em;
+            }
+            h1 {
+                font-size: 1.2em;
+            }
+            .section-title {
+                font-size: 1em;
+            }
+            #exit-btn {
+                padding: 6px 12px;
+                font-size: 0.95em;
+            }
+        }
+    </style>
+        <style>
+            .logo {
+                width: 48px;
+                height: 48px;
+                margin-right: 18px;
+                vertical-align: middle;
+            }
+            .icon {
+                width: 1.2em;
+                height: 1.2em;
+                vertical-align: middle;
+                margin-right: 6px;
+            }
+        </style>
+</head>
+<body>
+    
+    <div class="container">
+        <!-- SVG icons sprite -->
+        <div style="display:none">
+            <!--#include file="icons.svg"-->
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;">
+            <div style="display:flex;align-items:center;">
+                <img src="./icons/logo.svg" alt="Logo" class="logo">
+                <h1 style="margin-bottom:0;">Device Network Monitor</h1>
+            </div>
+            <button id="exit-btn" style="background:#e84545;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:1em;cursor:pointer;box-shadow:0 2px 8px #0005;">Exit</button>
+        </div>
+        <div class="section">
+            <div class="section-title">Device Information</div>
+            <table class="info-table">
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-cpu"/></svg> User</td><td class="value" id="user"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-cpu"/></svg> PC Name</td><td class="value" id="pc_name"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-cpu"/></svg> OS</td><td class="value" id="os"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-cpu"/></svg> Arch</td><td class="value" id="arch"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-cpu"/></svg> CPU</td><td class="value" id="cpu"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-ram"/></svg> RAM</td><td class="value" id="ramMB"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-ram"/></svg> Free RAM</td><td class="value" id="freeRamMB"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-disk"/></svg> Disk (C:)</td><td class="value" id="disk"></td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Network Information</div>
+            <table class="info-table" id="network-table">
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-network"/></svg> IP Address</td><td class="value" id="ip"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-network"/></svg> MAC Address</td><td class="value" id="mac"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-network"/></svg> SSID</td><td class="value" id="ssid"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-network"/></svg> Adapter</td><td class="value" id="adapter"></td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Battery Information</div>
+            <table class="info-table">
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-battery"/></svg> Level</td><td class="value" id="battery"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-battery"/></svg> Charging</td><td class="value" id="charging"></td></tr>
+                <tr><td class="label"><svg class="icon"><use href="./icons/icons.svg#icon-battery"/></svg> Time Left</td><td class="value" id="time_remaining"></td></tr>
+            </table>
+        </div>
+
+        <div style="margin-top:24px;text-align:center">
+            <span id="app-version" style="color:#21e6c1;font-weight:bold"></span>
+            <button id="update-btn" style="margin-left:24px;padding:6px 18px;background:#21e6c1;color:#162447;border:none;border-radius:6px;cursor:pointer;font-weight:bold;">Check for Update</button>
+            <span id="update-status" style="margin-left:16px;color:#e84545;font-weight:bold;"></span>
+        </div>
+        <div class="footer">
+            &copy; 2026 Device Network Monitor &mdash; Electron App
+        </div>
+    </div>
+    <script>
+                // Show app version
+                window.deviceAPI.getAppVersion().then(version => {
+                    document.getElementById('app-version').textContent = 'Version: ' + version;
+                });
+
+                // Update check handler
+                document.getElementById('update-btn').onclick = async () => {
+                    const status = document.getElementById('update-status');
+                    status.textContent = 'Checking...';
+                    try {
+                        const result = await window.deviceAPI.checkForUpdate();
+                        if (result.updateAvailable) {
+                            status.innerHTML = `Update available: v${result.latestVersion} <a href="${result.url}" target="_blank" style="color:#21e6c1;">Download</a>`;
+                        } else if (result.error) {
+                            status.textContent = 'Error: ' + result.error;
+                        } else {
+                            status.textContent = 'You are up to date!';
+                        }
+                    } catch (e) {
+                        status.textContent = 'Update check failed.';
+                    }
+                };
+        // Exit button handler
+        document.getElementById('exit-btn').onclick = () => {
+            if (window.deviceAPI && window.deviceAPI.exitApp) {
+                window.deviceAPI.exitApp();
+            } else {
+                window.close();
+            }
+        };
+
+        async function updateUI() {
+            const info = await window.deviceAPI.getSystemInfo();
+            document.getElementById('user').textContent = info.user;
+            document.getElementById('pc_name').textContent = info.hostname;
+            document.getElementById('os').textContent = info.platform;
+            document.getElementById('arch').textContent = info.arch;
+            document.getElementById('cpu').textContent = info.cpu;
+            document.getElementById('ramMB').textContent = info.ramMB + ' MB';
+            document.getElementById('freeRamMB').textContent = info.freeRamMB + ' MB';
+            // Disk info
+            if (info.disk && info.disk.length > 0) {
+                const c = info.disk.find(d => d.mount === 'C:' || d.fs === 'C:');
+                const d = c || info.disk[0];
+                document.getElementById('disk').textContent = `${Math.round(d.available/1073741824)} GB free of ${Math.round(d.size/1073741824)} GB`;
+            } else {
+                document.getElementById('disk').textContent = 'N/A';
+            }
+            // Network info
+            let ip = 'N/A', mac = 'N/A';
+            for (const iface in info.network) {
+                for (const n of info.network[iface]) {
+                    if (!n.internal && n.family === 'IPv4') {
+                        ip = n.address;
+                        mac = n.mac;
+                        break;
+                    }
+                }
+            }
+            document.getElementById('ip').textContent = ip;
+            document.getElementById('mac').textContent = mac;
+            // WiFi info
+            document.getElementById('ssid').textContent = info.currentWifi && info.currentWifi.length > 0 ? info.currentWifi[0].ssid : 'N/A';
+            document.getElementById('adapter').textContent = info.currentWifi && info.currentWifi.length > 0 ? info.currentWifi[0].iface : 'N/A';
+            // Battery
+            if (info.battery && info.battery.hasbattery) {
+                document.getElementById('battery').textContent = info.battery.percent + '%';
+                document.getElementById('charging').textContent = info.battery.ischarging ? 'Yes' : 'No';
+                document.getElementById('time_remaining').textContent = info.battery.timeremaining >= 0 ? info.battery.timeremaining + ' min' : 'N/A';
+            } else {
+                document.getElementById('battery').textContent = 'N/A';
+                document.getElementById('charging').textContent = 'N/A';
+                document.getElementById('time_remaining').textContent = 'N/A';
+            }
+        }
+        updateUI();
+        setInterval(updateUI, 30000);
+        // Accept Update Page button handler
+        document.getElementById('accept-update-page-btn').onclick = () => {
+            if (window.electronAPI && window.electronAPI.showUpdatePage) {
+                window.electronAPI.showUpdatePage();
+            }
+        };
+    </script>
+</body>
+</html>

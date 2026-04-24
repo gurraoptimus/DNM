@@ -1,0 +1,8 @@
+<svg width="320" height="100" viewBox="0 0 320 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<rect width="320" height="100" rx="20" fill="#232946"/>
+	<text x="30" y="65" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="bold" fill="#eebbc3">DNM</text>
+	<circle cx="120" cy="50" r="8" fill="#eebbc3"/>
+	<rect x="135" y="42" width="40" height="16" rx="8" fill="#eebbc3"/>
+	<circle cx="190" cy="50" r="8" fill="#eebbc3"/>
+	<text x="30" y="85" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#b8c1ec">Device Network Monitor</text>
+</svg>

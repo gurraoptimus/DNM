@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Available</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 400px; margin: 80px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 32px; text-align: center; }
+        h1 { color: #2d7ff9; }
+        p { color: #333; }
+        button { background: #2d7ff9; color: #fff; border: none; padding: 12px 32px; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 24px; }
+        button:disabled { background: #aaa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Available</h1>
+        <p>A new version of this application is available.<br>Would you like to update now?</p>
+        <button id="acceptUpdate">Accept & Install</button>
+        <button id="later">Later</button>
+        <div id="progress-container" style="margin-top:24px;display:none;">
+            <div style="background:#eee;border-radius:6px;height:18px;width:100%;overflow:hidden;">
+                <div id="progress-bar" style="background:#2d7ff9;height:100%;width:0%;transition:width 0.3s;"></div>
+            </div>
+            <div id="progress-label" style="margin-top:8px;color:#2d7ff9;font-weight:bold;">0%</div>
+        </div>
+        <div id="status" style="margin-top:20px;color:#2d7ff9;"></div>
+    </div>
+    <script>
+        const acceptBtn = document.getElementById('acceptUpdate');
+        const laterBtn = document.getElementById('later');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressLabel = document.getElementById('progress-label');
+        const statusDiv = document.getElementById('status');
+
+        acceptBtn.onclick = function() {
+            acceptBtn.disabled = true;
+            laterBtn.disabled = true;
+            statusDiv.textContent = 'Installing update...';
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressLabel.textContent = '0%';
+            window.electronAPI.acceptUpdate();
+        };
+        laterBtn.onclick = function() {
+            window.electronAPI.laterUpdate();
+        };
+
+        // Listen for update progress from main process
+        if (window.electronAPI && window.electronAPI.onUpdateProgress) {
+            window.electronAPI.onUpdateProgress(function(progress) {
+                progressBar.style.width = progress + '%';
+                progressLabel.textContent = progress + '%';
+            });
+        }
+        // Listen for update status from main process
+        if (window.electronAPI && window.electronAPI.onUpdateStatus) {
+            window.electronAPI.onUpdateStatus(function(msg) {
+                statusDiv.textContent = msg;
+                progressContainer.style.display = 'none';
+                acceptBtn.disabled = false;
+                laterBtn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>

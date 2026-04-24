@@ -1,0 +1,14 @@
+{
+  "name": "dnm",
+  "version": "1.0.0",
+  "main": "main.js",
+  "description": "Device Network Monitor Electron App",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^41.2.2",
+    "systeminformation": "^5.31.5"
+},
+"icon": "./icons/logo.svg"
+}
